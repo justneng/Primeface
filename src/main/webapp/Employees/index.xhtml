@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Primefaces MVC </title>
+        <link href="#{facesContext.externalContext.requestContextPath}/static/css/style.css" rel="stylesheet"/>
+    </h:head>
+    <h:body>
+        <p:growl id="notification"
+                 showDetail="true"
+                 showSummary="true"/>
+
+        <h1>Employees</h1>
+        <h:form id="employeesForm">
+            <p:inputText id="query" value="#{employeesControl.query}"/>
+            <p:watermark for="query" value="search..."/>
+
+            <p:selectOneMenu value="#{employeesControl.searchBy}">
+                <f:selectItem itemValue="name" itemLabel="ชื่อ"/>
+                <f:selectItem itemValue="email" itemLabel="email"/>
+                <f:selectItem itemValue="phone" itemLabel="เบอร์โทรศัพท์"/>
+                <f:selectItem itemValue="salary" itemLabel="เงินเดือน"/>
+            </p:selectOneMenu>
+            <p:commandButton value="search"
+                             styleClass="green-button"
+                             actionListener="#{employeesControl.onSearch()}"
+                             update="@form"/>
+            <p:commandButton value="clear"
+                             styleClass="white-button"
+                             actionListener="#{employeesControl.onClear()}"
+                             update="@form"/>
+            <p:dataTable value="#{employeesControl.employees}"
+                         rowIndexVar="counter"
+                         var="item">
+                <p:column headerText="no." style="width: 5%">
+                    #{counter + 1}
+                </p:column>
+                <p:column headerText="id">
+                    #{item.id}
+                </p:column>
+                <p:column headerText="ชื่อ">
+                    #{item.firstName}
+                </p:column>
+                <p:column headerText="นามสกุล">
+                    #{item.lastName}
+                </p:column>
+                <p:column headerText="email">
+                    #{item.email}
+                </p:column>
+                <p:column headerText="เบอร์โทรศัพท์">
+                    #{item.phoneNumber}
+                </p:column>
+                <p:column headerText="เงินเดือน">
+                    #{item.salary}
+                </p:column>
+                <p:column headerText="#">
+                    <p:commandLink value="show"
+                                   update=":showDialogPanel"
+                                   oncomplete="PF('showWidgetDialog').show()"
+                                   actionListener="#{employeesControl.onSelect()}">
+                        <f:param name="employeeId" value="#{item.id}"/>
+                    </p:commandLink>
+                    <p:spacer width="10"/>
+                    <p:commandLink value="delete"
+                                   update=":deleteDialogForm"
+                                   oncomplete="PF('deleteWidgetDialog').show()"
+                                   actionListener="#{employeesControl.onSelect()}">
+                        <f:param name="employeeId" value="#{item.id}"/>
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <p:dialog id="showDialog"
+                  width="500"
+                  header="Show Employee"
+                  resizable="false"
+                  widgetVar="showWidgetDialog">
+            <p:outputPanel id="showDialogPanel">
+                <h:panelGrid columns="2">
+                    <h:outputText value="id"/>
+                    <h:outputText value="#{employeesControl.employee.id}"/>
+
+                    <h:outputText value="ชื่อ"/>
+                    <h:outputText value="#{employeesControl.employee.firstName}"/>
+
+                    <h:outputText value="นามสกุล"/>
+                    <h:outputText value="#{employeesControl.employee.lastName}"/>
+
+                    <h:outputText value="email"/>
+                    <h:outputText value="#{employeesControl.employee.email}"/>
+
+                    <h:outputText value="เบอร์โทรศัพท์"/>
+                    <h:outputText value="#{employeesControl.employee.phoneNo}"/>
+
+                    <h:outputText value="เงินเดือน"/>
+                    <h:outputText value="#{employeesControl.employee.salary}"/>
+                </h:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+
+        <p:dialog id="deleteDialog"
+                  width="500"
+                  header="Delete Employee"
+                  resizable="false"
+                  widgetVar="deleteWidgetDialog">
+            <h:form id="deleteDialogForm"> 
+                #{employeesControl.employee.firstName} #{employeesControl.employee.lastName}
+                <br/>
+                <br/>
+                <p:commandButton value="delete"
+                                 update=":notification, :employeesForm"
+                                 actionListener="#{employeesControl.onDelete()}"
+                                 oncomplete="PF('deleteWidgetDialog').hide()"
+                                 styleClass="red-button"/>
+                <p:commandButton value="cancel"
+                                 type="button"
+                                 onclick="PF('deleteWidgetDialog').hide()"
+                                 styleClass="white-button"/>
+            </h:form>
+        </p:dialog>
+
+        <style>
+            body{
+                padding: 20px;
+            }
+
+            .ui-datatable{
+                margin-top: 20px;
+            }
+
+            .ui-button{
+                margin-right: 10px;
+            }
+
+            .ui-selectonemenu{
+                position: relative;
+                top : 10px;
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+        </style>
+    </h:body>
+</html>
+
