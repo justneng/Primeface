@@ -20,9 +20,9 @@ public class SearchServicesUtils {
         searchServiceMap = new HashMap<>();
         searchServiceMap.put("default", new EmployeesSearchServicesImplements());
         searchServiceMap.put("name", new EmployeesSearchByNameServicesImplements());
-        searchServiceMap.put("email", new EmployeeSearchByEmailServiceImplements());
-        searchServiceMap.put("phone", new EmployeeSearchByPhoneServiceImplements());
-        searchServiceMap.put("salary", new EmployeeSearchBySalaryServiceImplements());
+        searchServiceMap.put("email", new EmployeesSearchByEmailServiceImplements());
+        searchServiceMap.put("phone", new EmployeesSearchByPhoneServiceImplements());
+        searchServiceMap.put("salary", new EmployeesSearchBySalaryServiceImplements());
     }
 
     public static EmployeesSearchServices findServiceByName(String name) {

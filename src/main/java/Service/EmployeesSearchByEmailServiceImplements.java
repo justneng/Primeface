@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author anonymous
  */
-public class EmployeeSearchByEmailServiceImplements implements EmployeesSearchServices {
+public class EmployeesSearchByEmailServiceImplements implements EmployeesSearchServices {
 
     @Override
     public List<Employees> search(String keyword) {
